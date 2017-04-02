@@ -12,7 +12,7 @@ function newimg = brightness(img, shift)
 	for i=1 : x
 		for j=1 : y
 			for k=1:c
-				new_value = double(img(i,j,k))+shift
+				new_value = uint32(img(i,j,k))+shift
 				if new_value < 0 then
 					newimg(i,j,k) = 0
 				elseif new_value > 255 then
@@ -33,7 +33,7 @@ function newimg = exposure(img, shift)
 	for i=1 : x
 		for j=1 : y
 			for k=1:c
-				new_value = double(img(i,j,k))*shift
+				new_value = uint32(img(i,j,k))*shift
 				if new_value < 0 then
 					newimg(i,j,k) = 0
 				elseif new_value > 255 then
@@ -86,4 +86,27 @@ function [R,G,B] = rgb_channels(img)
 	B = blank
 	B(:,:,2) = blank
 	B(:,:,3) = img(:,:,3)
+endfunction
+
+
+function newimg = oil_painting(img, brush_size)
+	[x,y,c] = size(img)
+
+	newimg=zeros([x-brush_size(1),y-brush_size(2),c]);
+
+	for i=1:x-brush_size(1)
+	    for j=1:y-brush_size(2)
+			for k=1:c
+	        	brush_area=img(i:i+brush_size(1)-1,j:j+brush_size(2)-1,k);
+	        	histo=uint8(zeros(1,256));
+	        	for b=1:brush_size(1)*brush_size(2)
+	        		value = uint16(brush_area(b))+1
+	        	    histo(value)=histo(value)+1;
+	        	end
+	        	[maxvalue,pos]=max(histo);
+	        	newimg(i,j,k)=pos-1;
+	    	end
+		end
+	end
+	newimg = uint8(newimg)
 endfunction
