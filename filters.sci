@@ -176,15 +176,15 @@ function new_img = outlining(img, filter_size, border_mode)
 	[x,y,c] = size(img)
 
 	[D,G,H,B] = outlines(filter_size)
-	d = im2uint8(apply_filter(img, D,border_mode))
-	g = im2uint8(apply_filter(img, G,border_mode))
-	h = im2uint8(apply_filter(img, H,border_mode))
-	b = im2uint8(apply_filter(img, B,border_mode))
+	D = im2uint8(apply_filter(img, D,border_mode))
+	G = im2uint8(apply_filter(img, G,border_mode))
+	H = im2uint8(apply_filter(img, H,border_mode))
+	B = im2uint8(apply_filter(img, B,border_mode))
 
 	for i=1 : x
 		for j=1 : y
 			for k=1:c
-				new_value = uint32(d(i,j,k))+g(i,j,k)+h(i,j,k)+b(i,j,k)
+				new_value = uit32(D(i,j,k)+G(i,j,k)+H(i,j,k)+B(i,j,k)
 				if new_value > 255 then
 					new_img(i,j,k) = 255
 				else
@@ -194,5 +194,5 @@ function new_img = outlining(img, filter_size, border_mode)
 		end
 	end
 	new_img = uint8(new_img)
-	[D,G,H,B] = return(d,g,h,b)
+	[D,G,H,B] = return(D,G,H,B)
 endfunction

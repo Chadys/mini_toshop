@@ -110,3 +110,19 @@ function newimg = oil_painting(img, brush_size)
 	end
 	newimg = uint8(newimg)
 endfunction
+
+
+function newimg = glassy(img, brush_size)
+	[x,y,c] = size(img)
+
+	newimg=zeros([x-brush_size(1),y-brush_size(2),c]);
+
+	for i=1:x-brush_size(1)
+	    for j=1:y-brush_size(2)
+			brush_area=img(i:i+brush_size(1)-1,j:j+brush_size(2)-1,:);
+			ii=ceil(rand(1)*brush_size(1));
+			jj=ceil(rand(1)*brush_size(2));
+        	newimg(i,j,:)=matrix(brush_area(ii,jj,:),1,3);
+		end
+	end
+endfunction
