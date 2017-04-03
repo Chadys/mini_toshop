@@ -150,7 +150,7 @@ function new_img = histo_equalizer(img)
 	histo=uint32(zeros(1,256));
     for i = 1:x
     	for j = 1:y
-    		pixel_intensity = round(mean(double(img(i,j,:))+1
+    		pixel_intensity = round(mean(double(img(i,j,:))))+1
     		histo(pixel_intensity) = histo(pixel_intensity)+1
     	end
     end
@@ -165,4 +165,27 @@ function new_img = histo_equalizer(img)
     	end
     end
     new_img = uint8(new_img)
+endfunction
+
+
+function new_img = color_blend(img, color_name, coef)
+	//color_name can be the name of a predefined color
+	//or directly the vector of the color
+
+	//coef is optional
+  	if ~exists("coef","local") then
+    	coef = 1
+  	end
+
+    [x,y,c] = size(img)
+
+    if type(color_name) == 10
+	    colour = name2rgb(color_name)
+	else
+		colour = color_name
+	end
+    for k = 1:c
+	    flt(:,:,k) = resize_matrix(colour(k),x,y,"",colour(k))
+	end
+    new_img = uint8((double(img(:,:,:))+(double(flt)*coef))/(1+coef))
 endfunction
