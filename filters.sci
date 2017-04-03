@@ -28,7 +28,7 @@ function flt = gaussien(T, sigma)
 endfunction
 
 
-function [D,G,H,B] = outlines(T)
+function [D,G,H,B] = sobel(T)
 	D =  -floor(T/2) : floor(T/2)
 	for i = 2 : T
 		D($+1,:) = D(1,:)*(min(abs(i-1), abs(i-T))+1)
@@ -36,6 +36,19 @@ function [D,G,H,B] = outlines(T)
 	G = -D
 	B = D'
 	H = -B
+endfunction
+
+
+function flt = laplacien(T)
+	//T is optional
+  	if ~exists("T","local") then
+    	T = 8
+  	end
+  	if T == 4 then
+  		flt = [1 1 1 ; 1 -8 1 ; 1 1 1]
+  	else
+  		flt = [0 1 0 ; 1 -4 1 ; 0 1 0]
+  	end
 endfunction
 
 
@@ -164,7 +177,7 @@ function new_img = outlining(img, filter_size, border_mode)
 
 	[x,y,c] = size(img)
 
-	[D,G,H,B] = outlines(filter_size)
+	[D,G,H,B] = sobel(filter_size)
 	d = apply_filter(img, D,border_mode)
 	g = apply_filter(img, G,border_mode)
 	h = apply_filter(img, H,border_mode)
