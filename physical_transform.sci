@@ -160,11 +160,12 @@ function newimg=swirl(img, r_degree)
             ii = i-midx
             jj = j-midy
             [radius, theta] = cart2pol(ii, jj)
-            new_i = ceil(midx + (radius * cos(theta + r_degree * radius)))
+            distance = dist([i j], [midx midy])
+            new_i = ceil(midx + (radius * cos(theta + r_degree*distance * radius)))
             if ~(new_i > 0 & new_i < x)
                 new_i = i
             end
-            new_j = ceil(midy + (radius * sin(theta + r_degree * radius)))
+            new_j = ceil(midy + (radius * sin(theta + r_degree*distance * radius)))
             if ~(new_j > 0 & new_j < y)
                 new_j = j;
             end
