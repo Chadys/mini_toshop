@@ -64,13 +64,17 @@ function newimg = glitch(img, glitchiness)
 endfunction
 
 
-function newimg = black_and_white(img)
+function newimg = seuillage(img, seuil)
+	//seuil is optional
+  	if ~exists("seuil","local") then
+    	seuil = 255/2
+  	end
 	[x,y,c] = size(img)
 
 	for i=1 : x
 		for j=1 : y
 			maxi = max(img(i,j,:))
-			if maxi > 255/2 then
+			if maxi > seuil then
 				newimg(i,j) = 255
 			else
 				newimg(i,j) = 0
@@ -112,6 +116,30 @@ function newimg = oil_painting(img, brush_size)
 	        	newimg(i,j,k)=pos-1;
 	    	end
 		end
+	end
+	newimg = uint8(newimg)
+endfunction
+
+
+function newimg = bit_reduce(img, nbits)
+    if nbits > 8 then
+        error('nbits must not be greater than 8!');
+    end
+	[x,y,c] = size(img)
+
+	gray_lvl = 2^nbits
+	pas = 256/gray_lvl
+	values_dist = floor(256/(gray_lvl-1))
+	for i = 1:gray_lvl
+		values(i) = (i-1)*values_dist
+	end
+
+	for i=1:x
+	    for j=1:y
+	    	for k = 1:c
+	    		newimg(i,j,k) = min(values(floor(double(img(i,j,k))/pas)+1),255)
+	    	end
+	    end
 	end
 	newimg = uint8(newimg)
 endfunction
