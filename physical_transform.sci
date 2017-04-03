@@ -104,3 +104,13 @@ function newimg = noisify(img, noise_type, noise_factor)
     end
     newimg = im2uint8(newimg)
 endfunction
+
+
+function newimg = halftoning(img)
+    [x,y,c] = size(img)
+    original = im2double(img(:,:,:))
+    newimg = zeros(x,y,c)
+    chances = rand(x,y,c)
+    newimg(original>chances) = 255;
+    newimg = uint8(newimg)
+endfunction
