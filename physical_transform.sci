@@ -114,3 +114,31 @@ function newimg = halftoning(img)
     newimg(original>chances) = 255;
     newimg = uint8(newimg)
 endfunction
+
+
+function newimg=halftoning2(img)
+    //taken and adapted from IPT3:1.0 source code
+    [x,y,c]=size(img);
+    
+    img=im2double(img);
+    newimg=zeros(x,y);
+    for i=1:x
+        for j=1:y
+            for k=1:c
+                if img(i,j,k)>0.5 then
+                    newimg(i,j,k)=1;
+                end
+            end
+            overdue=img(i,j,:)-newimg(i,j,:);
+            if j<y then
+                img(i,j+1,:)=img(i,j+1,:)+overdue./2;
+            end
+            if i<x & j>1 then
+                img(i+1, j-1,:)=img(i+1,j-1,:)+overdue./6;
+            end
+            if i<x  then
+                img(i+1,j,:)=img(i+1,j,:)+overdue./4;
+            end
+        end
+    end    
+endfunction
