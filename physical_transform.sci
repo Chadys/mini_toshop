@@ -142,3 +142,33 @@ function newimg=halftoning2(img)
         end
     end    
 endfunction
+
+
+function newimg=swirl(img, r_degree)
+    //r_degree is optional
+    if ~exists("r_degree","local") then
+        r_degree = %pi/80
+    end
+
+    [x,y,c]=size(img);
+    
+    img=im2double(img);
+    midx = x/2
+    midy = y/2 
+    for i=1:x
+        for j=1:y
+            ii = i-midx
+            jj = j-midy
+            [radius, theta] = cart2pol(ii, jj)
+            new_i = ceil(midx + (radius * cos(theta + r_degree * radius)))
+            if ~(new_i > 0 & new_i < x)
+                new_i = i
+            end
+            new_j = ceil(midy + (radius * sin(theta + r_degree * radius)))
+            if ~(new_j > 0 & new_j < y)
+                new_j = j;
+            end
+            newimg(i,j) = img(new_i, new_j)
+        end
+    end
+endfunction
