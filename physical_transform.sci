@@ -69,7 +69,7 @@ function newimg = oil_painting(img, brush_size)
                     histo(value)=histo(value)+1;
                 end
                 [maxvalue,pos]=max(histo);
-                newimg(i,j,k)=pos-1;
+                newimg(i,j,k)=pos(2)-1;
             end
         end
     end
@@ -77,18 +77,30 @@ function newimg = oil_painting(img, brush_size)
 endfunction
 
 
-function newimg = noisify(img, sigma)
-    //sigma is optional
-    if ~exists("sigma","local") then
-        sigma = 2
+function newimg = noisify(img, noise_type, noise_factor)
+    //noise_factor is optional
+    if ~exists("noise_factor","local") then
+        noise_factor = 0.3
     end
+    //noise_type is optional
+    if ~exists("noise_type","local") then
+        noise_type = 1
+    end
+    //noise_factor 1 = bruit de perlin
+    //noise_factor 2 = poivre&sel
 
     [x,y,c] = size(img)
-
-    flt=sigma*rand(x, y, "normal")
     newimg = im2double(img)
-    for k=1:c
-        newimg(:,:,k) = 1.0/sigma*(newimg(:,:,k).*flt)
+
+    if noise_type == 1 then
+        flt=noise_factor*rand(x, y, "normal")
+        for k=1:c
+            newimg(:,:,k) = 1.0/noise_factor*(newimg(:,:,k).*flt)
+        end
+    else
+        noises = rand(x,y,c);
+        newimg(noises<noise_factor/2) = 0;
+        newimg((noises>=noise_factor/2)&(noises<noise_factor)) = 255;
     end
     newimg = im2uint8(newimg)
 endfunction
