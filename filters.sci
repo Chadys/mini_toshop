@@ -131,11 +131,11 @@ function new_img = apply_median_filter(img, filter_size, border_mode)
 				//put to zero border pixels
 				new_img(i,j,:) = [0 0 0]
 			else
-				bas = max(i-border_l_limit, 1)
-				haut = min(i+border_l_limit, x)
+				haut = max(i-border_l_limit, 1)
+				bas = min(i+border_l_limit, x)
 				gauche = max(j-border_c_limit,1)
 				droite = min(j+border_c_limit, y)
-				voisins = img(bas:haut, gauche:droite,:)
+				voisins = img(haut:bas, gauche:droite,:)
 				//mirror border
 				if border_mode == 3 then
 					for k=i-border_l_limit:1
@@ -154,6 +154,60 @@ function new_img = apply_median_filter(img, filter_size, border_mode)
 				n_y = length(voisins(:,:,1))
 				voisins = gsort(matrix(voisins, 1, n_y, c))
 				new_img(i,j,:) = matrix(voisins(:,n_y/2,:),1,c)
+			end
+		end
+	end
+	new_img = uint8(new_img)
+endfunction
+
+
+function new_img = despeckle(img, filter_size, border_mode)
+
+	//filter_size is optional
+  	if ~exists("filter_size","local") then
+    	filter_size = [3 3]
+  	end
+
+	//border_mode is optional
+  	if ~exists("border_mode","local") then
+    	border_mode = 2
+  	end
+	//border_mode 1 = border to 0
+	//border_mode 2 = partial convolution
+
+	[x,y, c] = size(img)
+	border_l_limit = floor(filter_size(1)/2)
+	border_c_limit = floor(filter_size(2)/2)
+
+	for i=1 : x
+		for j=1 : y
+			//if border
+			if border_mode == 1 & (i <= border_l_limit | j <= border_c_limit |...
+							i > x-border_l_limit | j > y-border_c_limit) then
+				//put to zero border pixels
+				new_img(i,j,:) = [0 0 0]
+			else
+				haut = max(i-border_l_limit, 1)
+				bas = min(i+border_l_limit, x)
+				gauche = max(j-border_c_limit,1)
+				droite = min(j+border_c_limit, y)
+				tmp = 1
+				for ii = haut:bas
+					for jj = gauche:droite
+						//if not center pixel
+						if ii <> i | jj <> j then
+							voisins(tmp,:) = double(matrix(img(ii,jj,:),1,c))
+							tmp = tmp+1
+						end
+					end
+				end
+				color_intensity = mean(voisins,2)
+				ecart_type = stdev(color_intensity)
+				if abs(mean(color_intensity) - double(img(i,j))) > ecart_type then
+					new_img(i,j,:) = mean(voisins,1)
+				else
+					new_img(i,j,:) = matrix(img(i,j,:),1,c)
+				end
 			end
 		end
 	end

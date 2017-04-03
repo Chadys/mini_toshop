@@ -150,7 +150,7 @@ function new_img = histo_equalizer(img)
 	histo=uint32(zeros(1,256));
     for i = 1:x
     	for j = 1:y
-    		pixel_intensity = round(sum(double(img(i,j,:)))/c)+1
+    		pixel_intensity = round(mean(double(img(i,j,:))+1
     		histo(pixel_intensity) = histo(pixel_intensity)+1
     	end
     end
