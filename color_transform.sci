@@ -149,3 +149,25 @@ function new_img = mosaic(img, piece_size)
     new_img = uint8(new_img);
 endfunction
 
+
+function new_img = linear_extension(img)
+    [x,y,c] = size(img)
+    for k=1:c
+    	min_value(k) = min(img(:,:,k))
+    	max_value(k) = max(img(:,:,k))
+    end
+    for ng = 1 : 256
+    	for k = 1 : c
+    		LUT(ng,k) = (255*double(ng-1-min_value(k)))/double(max_value(k)-min_value(k))
+    	end
+    end
+    for i = 1:x
+    	for j = 1:y
+    		for k = 1:c
+	    		new_img(i,j,k) = LUT(uint16(img(i,j,k))+1)
+	    	end
+    	end
+    end
+    new_img = uint8(new_img)
+endfunction
+

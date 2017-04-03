@@ -172,16 +172,9 @@ function new_img = outlining(img, filter_size, border_mode)
 
 	for i=1 : x
 		for j=1 : y
-			for k=1:c
-				new_value = uint32(d(i,j,k))+g(i,j,k)+h(i,j,k)+b(i,j,k)
-				if new_value > 255 then
-					new_img(i,j,k) = 255
-				else
-					new_img(i,j,k) = new_value
-				end
-			end
+			new_values = uint32(d(i,j,:))+g(i,j,:)+h(i,j,:)+b(i,j,:)
+			new_img(i,j,:) = min(matrix(new_values,1,3),resize_matrix(255,1,c,"",255))
 		end
 	end
 	new_img = uint8(new_img)
-	[D,G,H,B] = return(d,g,h,b)
 endfunction
