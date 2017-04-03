@@ -72,18 +72,10 @@ function new_img = apply_filter(img, flt, border_mode)
 						if i+ii < 1 | i+ii > x | j+jj < 1 | j+jj > y then
 							//mirror border
 							if border_mode == 3 then
-								I = i+ii
-								J = j+jj
-								if i+ii < 1 then
-									I = 1
-								elseif i+ii > x then
-									I = x
-								end
-								if j+jj < 1 then
-									J = 1
-								elseif j+jj > y then
-									J = y
-								end
+								I = max(i+ii, 1)
+								I = min(I, x)
+								J = max(j+jj, 1)
+								J = min(J, y)
 								new_val = new_val + img(I, J,:)*flt(border_l_limit+1+ii, border_c_limit+1+jj)
 							end
 						else
@@ -95,6 +87,7 @@ function new_img = apply_filter(img, flt, border_mode)
 			end
 		end
 	end
+	new_img = im2uint8(new_img)
 endfunction
 
 
@@ -125,14 +118,10 @@ function new_img = apply_median_filter(img, filter_size, border_mode)
 				//put to zero border pixels
 				new_img(i,j,:) = [0 0 0]
 			else
-				bas = i-border_l_limit
-				haut = i+border_l_limit
-				gauche = j-border_c_limit
-				droite = j+border_c_limit
-				if gauche < 1 then ; gauche = 1 ; end
-				if bas < 1 then ; bas = 1 ; end
-				if haut > x then ; haut = x ; end
-				if droite > y then ; droite = y ; end
+				bas = max(i-border_l_limit, 1)
+				haut = min(i+border_l_limit, x)
+				gauche = max(j-border_c_limit,1)
+				droite = min(j+border_c_limit, y)
 				voisins = img(bas:haut, gauche:droite,:)
 				//mirror border
 				if border_mode == 3 then
@@ -176,15 +165,15 @@ function new_img = outlining(img, filter_size, border_mode)
 	[x,y,c] = size(img)
 
 	[D,G,H,B] = outlines(filter_size)
-	D = im2uint8(apply_filter(img, D,border_mode))
-	G = im2uint8(apply_filter(img, G,border_mode))
-	H = im2uint8(apply_filter(img, H,border_mode))
-	B = im2uint8(apply_filter(img, B,border_mode))
+	d = apply_filter(img, D,border_mode)
+	g = apply_filter(img, G,border_mode)
+	h = apply_filter(img, H,border_mode)
+	b = apply_filter(img, B,border_mode)
 
 	for i=1 : x
 		for j=1 : y
 			for k=1:c
-				new_value = uit32(D(i,j,k)+G(i,j,k)+H(i,j,k)+B(i,j,k)
+				new_value = uint32(d(i,j,k))+g(i,j,k)+h(i,j,k)+b(i,j,k)
 				if new_value > 255 then
 					new_img(i,j,k) = 255
 				else
@@ -194,5 +183,5 @@ function new_img = outlining(img, filter_size, border_mode)
 		end
 	end
 	new_img = uint8(new_img)
-	[D,G,H,B] = return(D,G,H,B)
+	[D,G,H,B] = return(d,g,h,b)
 endfunction

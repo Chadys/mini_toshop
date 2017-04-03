@@ -6,13 +6,18 @@ function newimg = rvb2ng(img)
 endfunction
 
 
+function newimg = negative(img)
+	newimg = 255-img
+endfunction
+
+
 function newimg = brightness(img, shift)
 	[x,y,c] = size(img)
 
 	for i=1 : x
 		for j=1 : y
 			for k=1:c
-				new_value = uint32(img(i,j,k))+shift
+				new_value = double(img(i,j,k))+shift
 				if new_value < 0 then
 					newimg(i,j,k) = 0
 				elseif new_value > 255 then
@@ -33,7 +38,7 @@ function newimg = exposure(img, shift)
 	for i=1 : x
 		for j=1 : y
 			for k=1:c
-				new_value = uint32(img(i,j,k))*shift
+				new_value = double(img(i,j,k))*shift
 				if new_value < 0 then
 					newimg(i,j,k) = 0
 				elseif new_value > 255 then
@@ -126,3 +131,21 @@ function newimg = glassy(img, brush_size)
 		end
 	end
 endfunction
+
+
+function new_img = mosaic(img, piece_size)
+    [x,y,c] = size(img)
+    new_img = []
+    for i = 1:piece_size(1):floor(x/piece_size(1))*piece_size(1)
+        for j = 1:piece_size(2):floor(y/piece_size(2))*piece_size(2)
+            sq = img(i:min(i+piece_size(1)-1,x),j:min(j+piece_size(2)-1,y),:)
+            sq = repmat(mean(mean(double(sq),1),2),piece_size)
+            if new_img == [] then
+            	sq = matrix(sq, piece_size(1)*piece_size(2),c)
+        	end
+            new_img(i:min(i+piece_size(1)-1,x),j:min(j+piece_size(2)-1,y),:) = sq
+        end
+    end
+    new_img = uint8(new_img);
+endfunction
+
