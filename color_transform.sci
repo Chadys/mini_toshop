@@ -1,4 +1,4 @@
-function newimg = rvb2ng(img)
+function newimg = rvb2nb(img)
 	r = img(:,:,1)
 	g = img(:,:,2)
 	b = img(:,:,3)
@@ -171,3 +171,26 @@ function new_img = linear_extension(img)
     new_img = uint8(new_img)
 endfunction
 
+
+function new_img = histo_equalizer(img)
+    [x,y,c] = size(img)
+    
+	histo=uint32(zeros(1,256));
+    for i = 1:x
+    	for j = 1:y
+    		pixel_intensity = round(sum(double(img(i,j,:)))/c)+1
+    		histo(pixel_intensity) = histo(pixel_intensity)+1
+    	end
+    end
+    for i = 1:256
+    	histo_cumul(i) = sum(histo(1:i))
+    end
+    for i = 1:x
+    	for j = 1:y
+    		for k = 1:c
+    			new_img(i,j,k) = (uint32(histo_cumul(uint16(img(i,j,k))+1))*255)/(x*y)
+    		end
+    	end
+    end
+    new_img = uint8(new_img)
+endfunction
