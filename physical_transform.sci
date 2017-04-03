@@ -150,7 +150,7 @@ function newimg=swirl(img, r_degree)
         r_degree = %pi/80
     end
 
-    [x,y,c]=size(img);
+    [x,y]=size(img);
     
     img=im2double(img);
     midx = x/2
@@ -161,15 +161,48 @@ function newimg=swirl(img, r_degree)
             jj = j-midy
             [radius, theta] = cart2pol(ii, jj)
             distance = dist([i j], [midx midy])
-            new_i = ceil(midx + (radius * cos(theta + r_degree*distance * radius)))
-            if ~(new_i > 0 & new_i < x)
+            [new_i, new_j] = pol2cart(theta + r_degree*distance * radius, radius)
+            new_i = ceil(midx + new_i)
+            new_j = ceil(midx + new_j)
+            if ~(new_i > 0 & new_i <= x)
                 new_i = i
             end
-            new_j = ceil(midy + (radius * sin(theta + r_degree*distance * radius)))
-            if ~(new_j > 0 & new_j < y)
-                new_j = j;
+            if ~(new_j > 0 & new_j <= y)
+                new_j = j
             end
-            newimg(i,j) = img(new_i, new_j)
+            newimg(i,j,:) = matrix(img(new_i, new_j,:),1,3)
         end
     end
+    newimg = im2uint8(newimg)
+endfunction
+
+
+function newimg=sphere(img)
+    [x,y]=size(img);
+    
+    img=im2double(img);
+    midx = x/2
+    midy = y/2 
+
+    for i=1:x
+        for j=1:y
+            ii = i-midx
+            jj = j-midy
+            [radius, theta] = cart2pol(ii, jj)
+
+            new_radius = radius^2/(max(midx, midy));
+
+            [new_i, new_j] = pol2cart(theta, new_radius)
+            new_i = ceil(midx + new_i)
+            new_j = ceil(midx + new_j)
+            if ~(new_i > 0 & new_i <= x)
+                new_i = 1
+            end
+            if ~(new_j > 0 & new_j <= y & new_i > 0 & new_i <= x)
+                new_j = 1
+            end
+            newimg(i,j,:) = matrix(img(new_i, new_j,:),1,3)
+        end
+    end
+    newimg = im2uint8(newimg)
 endfunction
