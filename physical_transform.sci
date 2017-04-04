@@ -198,7 +198,74 @@ function newimg=sphere(img)
             if ~(new_i > 0 & new_i <= x)
                 new_i = 1
             end
-            if ~(new_j > 0 & new_j <= y & new_i > 0 & new_i <= x)
+            if ~(new_j > 0 & new_j <= y)
+                new_j = 1
+            end
+            newimg(i,j,:) = matrix(img(new_i, new_j,:),1,3)
+        end
+    end
+    newimg = im2uint8(newimg)
+endfunction
+
+
+function newimg=time_warp(img, warp_factor)
+    //warp_factor is optional
+    if ~exists("warp_factor","local") then
+        warp_factor = 10
+    end
+    [x,y]=size(img);
+    
+    img=im2double(img);
+    midx = x/2
+    midy = y/2 
+
+    for i=1:x
+        for j=1:y
+            ii = i-midx
+            jj = j-midy
+            [radius, theta] = cart2pol(ii, jj)
+
+            new_radius = sqrt(radius) * warp_factor
+
+            [new_i, new_j] = pol2cart(theta, new_radius)
+            new_i = ceil(midx + new_i)
+            new_j = ceil(midx + new_j)
+            if ~(new_i > 0 & new_i <= x)
+                new_i = 1
+            end
+            if ~(new_j > 0 & new_j <= y)
+                new_j = 1
+            end
+            newimg(i,j,:) = matrix(img(new_i, new_j,:),1,3)
+        end
+    end
+    newimg = im2uint8(newimg)
+endfunction
+
+
+function newimg=water(img, wave_factor)
+    //wave_factor is optional
+    if ~exists("wave_factor","local") then
+        wave_factor = %pi/80
+    end
+    [x,y]=size(img);
+    
+    img=im2double(img);
+    midx = x/2
+    midy = y/2 
+
+    for i=1:x
+        for j=1:y
+            ii = i-midx
+            jj = j-midy
+
+            new_i = ceil(i+(double(wave_factor) * sin(2.0 * %pi * j / 128.0)));
+            new_j = ceil(j+(double(wave_factor) * cos(2.0 * %pi * i / 128.0)));
+
+            if ~(new_i > 0 & new_i <= x)
+                new_i = 1
+            end
+            if ~(new_j > 0 & new_j <= y)
                 new_j = 1
             end
             newimg(i,j,:) = matrix(img(new_i, new_j,:),1,3)
