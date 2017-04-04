@@ -17,7 +17,8 @@ function [zoomed_im] = zoom(original_im, zoom_factor)
 	end
 endfunction
 
-function new_img = flip(img, flip_type)
+
+function newimg = flip(img, flip_type)
 	//flip_type is optional
   	if ~exists("flip_type","local") then
     	flip_type = 2

@@ -1,10 +1,21 @@
 function flt = moyenneur(T)
+	// filtre flou uniforme
+	// param : T = taille du filtre
+	// nombre impaire (idéalement entre 3 et 15)
+
+  	if ~exists("T","local") then
+    	T=3
+  	end
+
 	flt = ones(T,T) * 1/9
 endfunction
 
 
 function flt = sharpener(T)
-	//T is optional
+	// filtre accentuation des détails
+	// param : T = taille du filtre
+	// nombre impaire (idéalement entre 3 et 15)
+
   	if ~exists("T","local") then
     	T=3
   	end
@@ -17,9 +28,17 @@ endfunction
 
 
 function flt = gaussien(T, sigma)
-	//sigma is optional
+	// filtre flou pondéré
+	// param : T = taille du filtre
+	// nombre impaire (idéalement entre 3 et 15)
+	// param : sigma = coef de gauss
+	// petit double ~entre 0 et 3?
+
   	if ~exists("sigma","local") then
     	sigma = 1.4
+  	end
+  	if ~exists("T","local") then
+    	T=3
   	end
 
 	indices = -floor(T/2) : floor(T/2);
@@ -29,6 +48,15 @@ endfunction
 
 
 function [D,G,H,B] = sobel(T)
+	// filtre de détection de contour
+	// renvoit les 4 filtres de sobel possibles
+	// param : T = taille du filtre
+	// nombre impaire (idéalement entre 3 et 15)
+
+  	if ~exists("T","local") then
+    	T=3
+  	end
+
 	D =  -floor(T/2) : floor(T/2)
 	for i = 2 : T
 		D($+1,:) = D(1,:)*(min(abs(i-1), abs(i-T))+1)
@@ -40,29 +68,37 @@ endfunction
 
 
 function flt = laplacien(T)
-	//T is optional
+	// meilleur filtre de détection de contour
+	// param : T = taille du filtre
+	// nombre impaire (idéalement entre 3 et 15)
+
   	if ~exists("T","local") then
     	T = 8
   	end
+
   	if T == 4 then
-  		flt = [1 1 1 ; 1 -8 1 ; 1 1 1]
-  	else
   		flt = [0 1 0 ; 1 -4 1 ; 0 1 0]
+  	else
+  		flt = [1 1 1 ; 1 -8 1 ; 1 1 1]
   	end
 endfunction
 
 
 
 
-function new_img = apply_filter(img, flt, border_mode)
-
-	//border_mode is optional
-  	if ~exists("border_mode","local") then
-    	border_mode = 3
-  	end
+function new_img = convolute(img, flt, border_mode)
+	// application d'un filtre de convolution
+	// param : flt = filtre
+	// matrice à deux dimensions
+	// param : border_mode = mode de gestion de la bordure
+	// entre 1 et 3
 	//border_mode 1 = border to 0
 	//border_mode 2 = partial convolution
 	//border_mode 3 = mirror border used
+
+  	if ~exists("border_mode","local") then
+    	border_mode = 3
+  	end
 
 	[x,y,c] = size(img)
 	img = im2double(img)
@@ -104,20 +140,23 @@ function new_img = apply_filter(img, flt, border_mode)
 endfunction
 
 
-function new_img = apply_median_filter(img, filter_size, border_mode)
-
-	//filter_size is optional
-  	if ~exists("filter_size","local") then
-    	filter_size = [3 3]
-  	end
-
-	//border_mode is optional
-  	if ~exists("border_mode","local") then
-    	border_mode = 3
-  	end
+function new_img = median_filter(img, filter_size, border_mode)
+	// application d'un filtre median
+	// param : filter_size = taille du filtre
+	// vector à deux entrées ([3 3] ou [5 7] par exemple)
+	// idéalement le même chiffre et nombre impaire entre 3 et 15
+	// param : border_mode = mode de gestion de la bordure
+	// entre 1 et 3
 	//border_mode 1 = border to 0
 	//border_mode 2 = partial convolution
 	//border_mode 3 = mirror border used
+
+  	if ~exists("filter_size","local") then
+    	filter_size = [3 3]
+  	end
+  	if ~exists("border_mode","local") then
+    	border_mode = 3
+  	end
 
 	[x,y, c] = size(img)
 	border_l_limit = floor(filter_size(1)/2)
@@ -162,18 +201,21 @@ endfunction
 
 
 function new_img = despeckle(img, filter_size, border_mode)
+	// application d'un filtre de débruitage
+	// param : filter_size = taille du filtre
+	// vector à deux entrées ([3 3] par exemple)
+	// idéalement le même chiffre et nombre impaire entre 3 et 15
+	// param : border_mode = mode de gestion de la bordure
+	// entre 1 et 2
+	//border_mode 1 = border to 0
+	//border_mode 2 = partial convolution
 
-	//filter_size is optional
   	if ~exists("filter_size","local") then
     	filter_size = [3 3]
   	end
-
-	//border_mode is optional
   	if ~exists("border_mode","local") then
     	border_mode = 2
   	end
-	//border_mode 1 = border to 0
-	//border_mode 2 = partial convolution
 
 	[x,y, c] = size(img)
 	border_l_limit = floor(filter_size(1)/2)
@@ -216,18 +258,22 @@ endfunction
 
 
 function new_img = outlining(img, filter_size, border_mode)
-
-	//filter_size is optional
-  	if ~exists("filter_size","local") then
-    	filter_size = 3
-  	end
-	//border_mode is optional
-  	if ~exists("border_mode","local") then
-    	border_mode = 3
-  	end
+	// application  des quatre filtres de sobel
+	// param : filter_size = taille du filtre
+	// vector à deux entrées ([3 3] par exemple)
+	// idéalement le même chiffre et nombre impaire entre 3 et 15
+	// param : border_mode = mode de gestion de la bordure
+	// entre 1 et 3
 	//border_mode 1 = border to 0
 	//border_mode 2 = partial convolution
 	//border_mode 3 = mirror border used
+
+  	if ~exists("filter_size","local") then
+    	filter_size = 3
+  	end
+  	if ~exists("border_mode","local") then
+    	border_mode = 3
+  	end
 
 	[x,y,c] = size(img)
 

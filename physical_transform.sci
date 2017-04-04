@@ -80,7 +80,7 @@ endfunction
 function newimg = noisify(img, noise_type, noise_factor)
     //noise_factor is optional
     if ~exists("noise_factor","local") then
-        noise_factor = 0.3
+        noise_factor = 0.02
     end
     //noise_type is optional
     if ~exists("noise_type","local") then
@@ -100,7 +100,7 @@ function newimg = noisify(img, noise_type, noise_factor)
     else
         noises = rand(x,y,c);
         newimg(noises<noise_factor/2) = 0;
-        newimg((noises>=noise_factor/2)&(noises<noise_factor)) = 255;
+        newimg((noises>=noise_factor/2)&(noises<noise_factor)) = 1;
     end
     newimg = im2uint8(newimg)
 endfunction
@@ -111,7 +111,7 @@ function newimg = halftoning(img)
     original = im2double(img(:,:,:))
     newimg = zeros(x,y,c)
     chances = rand(x,y,c)
-    newimg(original>chances) = 255;
+    newimg(original>chances) = 1;
     newimg = uint8(newimg)
 endfunction
 
