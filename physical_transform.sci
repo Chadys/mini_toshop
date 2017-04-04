@@ -273,3 +273,35 @@ function newimg=water(img, wave_factor)
     end
     newimg = im2uint8(newimg)
 endfunction
+
+
+function newimg=rotation(img, r_degree)
+    //r_degree is optional
+    if ~exists("r_degree","local") then
+        r_degree = %pi/2
+    end
+
+    [x,y]=size(img);
+    
+    img=im2double(img);
+    midx = x/2
+    midy = y/2 
+    for i=1:x
+        for j=1:y
+            ii = i-midx
+            jj = j-midy
+            [radius, theta] = cart2pol(ii, jj)
+            [new_i, new_j] = pol2cart(theta + r_degree, radius)
+            new_i = ceil(midx + new_i)
+            new_j = ceil(midx + new_j)
+            if ~(new_i > 0 & new_i <= x)
+                new_i = 1
+            end
+            if ~(new_j > 0 & new_j <= y)
+                new_j = 1
+            end
+            newimg(i,j,:) = matrix(img(new_i, new_j,:),1,3)
+        end
+    end
+    newimg = im2uint8(newimg)
+endfunction
