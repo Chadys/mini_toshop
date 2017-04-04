@@ -246,7 +246,7 @@ endfunction
 function newimg=water(img, wave_factor)
     //wave_factor is optional
     if ~exists("wave_factor","local") then
-        wave_factor = %pi/80
+        wave_factor = 10
     end
     [x,y]=size(img);
     
