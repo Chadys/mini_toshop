@@ -1,0 +1,28 @@
+Installer Scilab via "sudo apt install scilab"
+Lancer Scilab
+Dans Scilab, lancer
+"atomsInstall("SIVP")"
+Relancer Scilab
+
+Si ceci apparaît :
+"atomsLoad : Une erreur est survenue au cours du chargement de 'SIVP-0.5.3.2-' :
+	link : La bibliothèque partagée n'a pas été chargée: libtiff.so.4: Ne peut ouvrir le fichier d'objet partagé: Aucun fichier ou dossier de ce type."
+C'est que sur votre ordinateur possèbe libtiff5 et que Scilab tente d'utiliser le 4. Le 4 n'étant plus disponible par apt, soit il faut faire un 'wget' pour y avoir accès, soit il faut faire un lien symbolique pointant sur 'libtiff.so.5' et s'appelant 'libtiff.so.4'. La deuxième solution peut se faire par cette commande :
+"sudo ln -s /usr/lib/x86_64-linux-gnu/libtiff.so.5 /usr/lib/x86_64-linux-gnu/libtiff.so.4"
+(adapter le chemin en fonction de où se trouve libtiff.so.5 sur votre machine)
+Relancer Scilab
+
+Si ceci apparaît :
+"atomsLoad : Une erreur est survenue au cours du chargement de 'SIVP-0.5.3.2-' :
+	link : La bibliothèque partagée n'a pas été chargée: libjpeg.so.62: Ne peut ouvrir le fichier d'objet partagé: Aucun fichier ou dossier de ce type."
+Il vous manque le paquet libjpeg62. L'installer ("sudo apt install libjpeg62-dev")
+Relancer Scilab
+
+Si ceci apparaît :
+"atomsLoad : Une erreur est survenue au cours du chargement de 'SIVP-0.5.3.2-' :
+	link : La bibliothèque partagée n'a pas été chargée: /home/USERNAME/.Scilab/scilab-5.5.2/atoms/SIVP/0.5.3.2/sci_gateway/c//../../thirdparty/opencv/linux/x64/libavformat.so: fichier trop court"
+Allez à l'endroit indiqué ("cd /home/USERNAME/.Scilab/scilab-5.5.2/atoms/SIVP/0.5.3.2/thirdparty/opencv/linux/x64/")
+Lancer cette commande : 
+"for F in *.so; do LIB=$(cat $F) ; rm $F ; ln -s $LIB $F; done"
+
+Voilà, vous pourrez utiliser les fonctions de SIVP

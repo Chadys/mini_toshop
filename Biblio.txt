@@ -1,0 +1,5 @@
+Bibliography :
+
+http://angeljohnsy.blogspot.com/
+https://fr.mathworks.com/matlabcentral/fileexchange/22141-impulse-noise-addition?focused=5107383&tab=function
+https://www.codeproject.com/Articles/3419/Image-Processing-for-Dummies-with-C-and-GDI-Part
