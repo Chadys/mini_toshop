@@ -212,6 +212,7 @@ function new_img = color_blend(img, color_name, coef)
 	// voir https://help.scilab.org/docs/5.5.2/en_US/color_list.html
 	// pour la liste des valeurs possibles
 	// param : coef = coefficient d'intensité de la couleur par rapport à l'image
+	// 0 à 100
 
 	//color_name can be the name of a predefined color
 	//or directly the vector of the color

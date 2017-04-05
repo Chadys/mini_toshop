@@ -1,5 +1,7 @@
 function [zoomed_im] = zoom(original_im, zoom_factor)
-	//zoom_factor is optional
+	// zoom
+	// param : zoom_factor = coef de zoom
+
   	if ~exists("zoom_factor","local") then
     	zoom_factor = 2
   	end
@@ -19,7 +21,12 @@ endfunction
 
 
 function newimg = flip(img, flip_type)
-	//flip_type is optional
+	// renverser une image
+	// param : flip_type = sens du renversement
+	// entre 1 et 3
+	//1:vertical
+	//2:horizontal
+	//3:les deux
   	if ~exists("flip_type","local") then
     	flip_type = 2
   	end

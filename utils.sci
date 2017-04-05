@@ -24,6 +24,13 @@ function d = dist(x, y)
 	// distance euclidienne entre deux points
 	// param : x = vecteur coordonnées du point 1
 	// param : x = vecteur coordonnées du point 2
-	
+
 	d = sqrt((x(1)-y(1))^2+(x(2)-y(2))^2)
 endfunction;
+
+
+function [rad]=deg2rad(deg)
+	// converti un angle en degré en radian
+	// param : deg = angle en degré
+    rad=(deg/180)*%pi;
+endfunction

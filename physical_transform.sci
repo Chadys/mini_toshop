@@ -1,4 +1,17 @@
 function new_img = tiling(img, piece_size, gap_size)
+    // effet de déplacement random de sous-blocs de l'image
+    // param : piece_size = taille max d'une piece
+    // vecteur de deux int
+    // param : piece_size = taille max dde l'espacement entre deux pieces
+    // vecteur de deux int
+
+    if ~exists("piece_size","local") then
+        piece_size = [5 6]
+    end
+    if ~exists("gap_size","local") then
+        gap_size = [2 3]
+    end
+
     [img_l,img_c,c] = size(img)
     new_img=uint8(zeros(img_l, img_c, c));
     i=1; j=1;
@@ -22,6 +35,14 @@ endfunction
 
 
 function newimg = glassy(img, brush_size)
+    // effet comme à travers un verre texturé
+    // param : brush_size = taille des traits
+    // vecteur contenant longueur et largeur
+
+    if ~exists("brush_size","local") then
+        brush_size = [3 3]
+    end
+
     [x,y,c] = size(img)
 
     newimg=zeros([x-brush_size(1),y-brush_size(2),c]);
@@ -38,6 +59,14 @@ endfunction
 
 
 function new_img = mosaic(img, piece_size)
+    // effet de pixellisation
+    // param : piece_size = taille des "pixel"
+    // vecteur contenant longueur et largeur
+
+    if ~exists("piece_size","local") then
+        piece_size = [6 6]
+    end
+
     [x,y,c] = size(img)
     new_img = []
     for i = 1:piece_size(1):floor(x/piece_size(1))*piece_size(1)
@@ -55,6 +84,14 @@ endfunction
 
 
 function newimg = oil_painting(img, brush_size)
+    // effet comme une peinture
+    // param : brush_size = taille des traits
+    // vecteur contenant longueur et largeur
+
+    if ~exists("brush_size","local") then
+        brush_size = [7 7]
+    end
+
     [x,y,c] = size(img)
 
     newimg=zeros([x-brush_size(1),y-brush_size(2),c]);
@@ -78,16 +115,21 @@ endfunction
 
 
 function newimg = noisify(img, noise_type, noise_factor)
-    //noise_factor is optional
-    if ~exists("noise_factor","local") then
-        noise_factor = 0.02
-    end
-    //noise_type is optional
+    // ajoute du bruit à une image
+    // param : noise_type = type de bruit voulu
+    // 1 ou 2
+    //1:bruit de perlin
+    //2:poivre&sel
+    // param : noise_factor = coef de bruit
+    // uniquement utilisé pour le poivre&sel
+    // petit float, entre 0 et 0.5
+
     if ~exists("noise_type","local") then
         noise_type = 1
     end
-    //noise_factor 1 = bruit de perlin
-    //noise_factor 2 = poivre&sel
+    if ~exists("noise_factor","local") then
+        noise_factor = 0.02
+    end
 
     [x,y,c] = size(img)
     newimg = im2double(img)
@@ -107,6 +149,11 @@ endfunction
 
 
 function newimg = halftoning(img)
+    // Méthode de halftoning (n'utiliser que des pixels noir ou blanc
+    // pour obtenir des variances de gris)
+    // par random (plus l'intensité du pixel de base est forte,
+    // plus il a de chances d'être mis en noir)
+
     [x,y,c] = size(img)
     original = im2double(img(:,:,:))
     newimg = zeros(x,y,c)
@@ -117,6 +164,9 @@ endfunction
 
 
 function newimg=halftoning2(img)
+    // Méthode de halftoning (n'utiliser que des pixels noir ou blanc
+    // par renforcement
+
     //taken and adapted from IPT3:1.0 source code
     [x,y,c]=size(img);
     
@@ -145,7 +195,11 @@ endfunction
 
 
 function newimg=swirl(img, r_degree)
-    //r_degree is optional
+    // Fait tourbillonner l'image
+    // param : r_degree = degré de rotation
+    // %pi sur grande valeur
+    // à tester avec %pi/2, %pi/3, %pi/7, %pi/80 et %pi/10000
+
     if ~exists("r_degree","local") then
         r_degree = %pi/80
     end
@@ -177,7 +231,9 @@ function newimg=swirl(img, r_degree)
 endfunction
 
 
-function newimg=sphere(img)
+function newimg=fisheye(img)
+    // effet fish-eye
+
     [x,y]=size(img);
     
     img=im2double(img);
@@ -190,7 +246,7 @@ function newimg=sphere(img)
             jj = j-midy
             [radius, theta] = cart2pol(ii, jj)
 
-            new_radius = radius^2/(max(midx, midy));
+            new_radius = radius^2/max(midx, midy);
 
             [new_i, new_j] = pol2cart(theta, new_radius)
             new_i = ceil(midx + new_i)
@@ -208,11 +264,9 @@ function newimg=sphere(img)
 endfunction
 
 
-function newimg=time_warp(img, warp_factor)
-    //warp_factor is optional
-    if ~exists("warp_factor","local") then
-        warp_factor = 10
-    end
+function newimg=time_warp(img)
+    // comme si le milieu de l'image l'aspirait
+
     [x,y]=size(img);
     
     img=im2double(img);
@@ -225,7 +279,7 @@ function newimg=time_warp(img, warp_factor)
             jj = j-midy
             [radius, theta] = cart2pol(ii, jj)
 
-            new_radius = sqrt(radius) * warp_factor
+            new_radius = sqrt(radius) * sqrt(max(midx, midy))
 
             [new_i, new_j] = pol2cart(theta, new_radius)
             new_i = ceil(midx + new_i)
@@ -243,11 +297,25 @@ function newimg=time_warp(img, warp_factor)
 endfunction
 
 
-function newimg=water(img, wave_factor)
-    //wave_factor is optional
+function newimg=wave(img, wave_factor, v_distord, h_distord)
+    // effet de vague sur l'image
+    // param : wave_factor = coef de déformation
+    // entre 0 et 100
+    // param : v_distord = déformation verticale
+    // booléen
+    // param : h_distord = déformation horizontale
+    // booléen
+
     if ~exists("wave_factor","local") then
         wave_factor = 10
     end
+    if ~exists("v_distord","local") then
+        v_distord = %t
+    end
+    if ~exists("h_distord","local") then
+        h_distord = %t
+    end
+
     [x,y]=size(img);
     
     img=im2double(img);
@@ -259,8 +327,16 @@ function newimg=water(img, wave_factor)
             ii = i-midx
             jj = j-midy
 
-            new_i = ceil(i+(double(wave_factor) * sin(2.0 * %pi * j / 128.0)));
-            new_j = ceil(j+(double(wave_factor) * cos(2.0 * %pi * i / 128.0)));
+            if h_distord then
+                new_i = ceil(i+(double(wave_factor) * sin(2.0 * %pi * j / 128.0)));
+            else
+                new_i = i
+            end
+            if v_distord then
+                new_j = ceil(j+(double(wave_factor) * cos(2.0 * %pi * i / 128.0)));
+            else
+                new_j = j
+            end
 
             if ~(new_i > 0 & new_i <= x)
                 new_i = 1
@@ -275,14 +351,18 @@ function newimg=water(img, wave_factor)
 endfunction
 
 
-function newimg=rotation(img, r_degree)
-    //r_degree is optional
-    if ~exists("r_degree","local") then
-        r_degree = %pi/2
+function newimg=rotation(img, deg)
+    // applique une rotation a une image, ne change pas la taille de l'image
+    // param: deg = angle de rotation en degrée
+    // -360 à 360
+
+    if ~exists("deg","local") then
+        deg = 90
     end
 
     [x,y]=size(img);
     
+    deg = deg2rad(deg)
     img=im2double(img);
     midx = x/2
     midy = y/2 
@@ -291,7 +371,7 @@ function newimg=rotation(img, r_degree)
             ii = i-midx
             jj = j-midy
             [radius, theta] = cart2pol(ii, jj)
-            [new_i, new_j] = pol2cart(theta + r_degree, radius)
+            [new_i, new_j] = pol2cart(theta + deg, radius)
             new_i = ceil(midx + new_i)
             new_j = ceil(midx + new_j)
             if ~(new_i > 0 & new_i <= x)
