@@ -164,7 +164,7 @@ endfunction
 
 
 function newimg=halftoning2(img)
-    // Méthode de halftoning (n'utiliser que des pixels noir ou blanc
+    // Méthode de halftoning (n'utiliser que des pixels à 0 ou 255)
     // par renforcement
 
     //taken and adapted from IPT3:1.0 source code

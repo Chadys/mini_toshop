@@ -1,4 +1,8 @@
 function make_demo(img, file_path)
+	// créer et enregistre des images d'exemple
+	// d'utilisation de toutes les fonctions de modification
+	// param: file_path = string, endroit où les image seront enregistrées
+	// /!\ Attention, si image grande, très lent /!\
 
 	imwrite(img, file_path+"/00.png")
 	nb_img = rvb2nb(img)

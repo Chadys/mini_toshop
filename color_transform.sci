@@ -18,7 +18,7 @@ endfunction
 function newimg = brightness(img, shift)
 	// changement de luminosité d'une image
 	// param : shift = décalage à faire
-	// entre -inf et +inf
+	// entre -255 et +255
 
   	if ~exists("shift","local") then
     	shift = 80
