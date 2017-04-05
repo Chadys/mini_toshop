@@ -15,8 +15,8 @@ function new_img = tiling(img, piece_size, gap_size)
     [img_l,img_c,c] = size(img)
     new_img=uint8(zeros(img_l, img_c, c));
     i=1; j=1;
-    col=0;
-    row=0;
+    col=ceil(rand(1)*piece_size(2));
+    row=ceil(rand(1)*piece_size(1));
     m=1;n=1;
     while ( i < img_l)
         while(m+i+row < img_l & n+j+col < img_c)
