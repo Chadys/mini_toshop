@@ -70,7 +70,7 @@ endfunction
 function flt = laplacien(T)
 	// meilleur filtre de détection de contour
 	// param : T = taille du filtre
-	// nombre impaire (idéalement entre 3 et 15)
+	// 4 ou 8
 
   	if ~exists("T","local") then
     	T = 8

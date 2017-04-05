@@ -58,3 +58,39 @@ function newimg = flip(img, flip_type)
 		end
 	end
 endfunction
+
+
+function newimg=rotation(img, deg)
+    // applique une rotation a une image, ne change pas la taille de l'image
+    // param: deg = angle de rotation en degrée
+    // -360 à 360
+
+    if ~exists("deg","local") then
+        deg = 90
+    end
+
+    [x,y]=size(img);
+    
+    deg = deg2rad(deg)
+    img=im2double(img);
+    midx = x/2
+    midy = y/2 
+    for i=1:x
+        for j=1:y
+            ii = i-midx
+            jj = j-midy
+            [radius, theta] = cart2pol(ii, jj)
+            [new_i, new_j] = pol2cart(theta + deg, radius)
+            new_i = ceil(midx + new_i)
+            new_j = ceil(midx + new_j)
+            if ~(new_i > 0 & new_i <= x)
+                new_i = 1
+            end
+            if ~(new_j > 0 & new_j <= y)
+                new_j = 1
+            end
+            newimg(i,j,:) = matrix(img(new_i, new_j,:),1,3)
+        end
+    end
+    newimg = im2uint8(newimg)
+endfunction
