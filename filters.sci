@@ -260,8 +260,7 @@ endfunction
 function new_img = outlining(img, filter_size, border_mode)
 	// application  des quatre filtres de sobel
 	// param : filter_size = taille du filtre
-	// vector à deux entrées ([3 3] par exemple)
-	// idéalement le même chiffre et nombre impaire entre 3 et 15
+	// nombre impaire (idéalement entre 3 et 15)
 	// param : border_mode = mode de gestion de la bordure
 	// entre 1 et 3
 	//border_mode 1 = border to 0
@@ -278,10 +277,10 @@ function new_img = outlining(img, filter_size, border_mode)
 	[x,y,c] = size(img)
 
 	[D,G,H,B] = sobel(filter_size)
-	d = apply_filter(img, D,border_mode)
-	g = apply_filter(img, G,border_mode)
-	h = apply_filter(img, H,border_mode)
-	b = apply_filter(img, B,border_mode)
+	d = convolute(img, D,border_mode)
+	g = convolute(img, G,border_mode)
+	h = convolute(img, H,border_mode)
+	b = convolute(img, B,border_mode)
 
 	for i=1 : x
 		for j=1 : y

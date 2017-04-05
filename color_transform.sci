@@ -24,22 +24,9 @@ function newimg = brightness(img, shift)
     	shift = 80
   	end
 
-	[x,y,c] = size(img)
-
-	for i=1 : x
-		for j=1 : y
-			for k=1:c
-				new_value = double(img(i,j,k))+shift
-				if new_value < 0 then
-					newimg(i,j,k) = 0
-				elseif new_value > 255 then
-					newimg(i,j,k) = 255
-				else
-					newimg(i,j,k) = new_value
-				end
-			end
-		end
-	end
+	newimg = double(img)+shift
+	newimg(newimg>255) = 255
+	newimg(newimg<0) = 0
 	newimg = uint8(newimg)
 endfunction
 
@@ -53,22 +40,8 @@ function newimg = exposure(img, shift)
     	shift = 2
   	end
 
-	[x,y,c] = size(img)
-
-	for i=1 : x
-		for j=1 : y
-			for k=1:c
-				new_value = double(img(i,j,k))*shift
-				if new_value < 0 then
-					newimg(i,j,k) = 0
-				elseif new_value > 255 then
-					newimg(i,j,k) = 255
-				else
-					newimg(i,j,k) = new_value
-				end
-			end
-		end
-	end
+	newimg = double(img)*shift
+	newimg(newimg>255) = 255
 	newimg = uint8(newimg)
 endfunction
 
@@ -81,13 +54,8 @@ function newimg = glitch(img, glitchiness)
   	if ~exists("glitchiness","local") then
     	glitchiness = 5
   	end
-	[x,y,c] = size(img)
 
-	for i=1 : x
-		for j=1 : y
-			newimg(i,j,:) = matrix(img(i,j,:)*glitchiness,1,c)
-		end
-	end
+	newimg = img * glitchiness
 endfunction
 
 

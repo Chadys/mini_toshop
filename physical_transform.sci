@@ -158,7 +158,7 @@ function newimg = halftoning(img)
     original = im2double(img(:,:,:))
     newimg = zeros(x,y,c)
     chances = rand(x,y,c)
-    newimg(original>chances) = 1;
+    newimg(original>chances) = 255;
     newimg = uint8(newimg)
 endfunction
 
