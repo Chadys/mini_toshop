@@ -28,12 +28,12 @@ function newimg = flip(img, flip_type)
 	//2:horizontal
 	//3:les deux
   	if ~exists("flip_type","local") then
-    	flip_type = 2
+    	flip_type = 3
   	end
 	[x,y,c] = size(img)
 
 	// vertical flip
-	if flip_type == 0 then
+	if flip_type == 1 then
 		for i = 1 : x
 			for j = 1 : y/2+1
 				new_img(i,j,:) = matrix(img(i,y-j+1,:),1,c)
@@ -41,7 +41,7 @@ function newimg = flip(img, flip_type)
 			end
 		end
 	// horizontal flip
-	elseif flip_type == 1 then
+	elseif flip_type == 2 then
 		for i = 1 : x/2+1
 			for j = 1 : y
 				new_img(i,j,:) = matrix(img(x-i+1,j,:),1,c)
