@@ -197,11 +197,10 @@ endfunction
 function newimg=swirl(img, r_degree)
     // Fait tourbillonner l'image
     // param : r_degree = degré de rotation
-    // %pi sur grande valeur
-    // à tester avec %pi/2, %pi/3, %pi/7, %pi/80 et %pi/10000
+    // %pi sur valeur de 1 à +inf
 
     if ~exists("r_degree","local") then
-        r_degree = %pi/80
+        r_degree = %pi/500
     end
 
     [x,y]=size(img);
@@ -234,6 +233,7 @@ endfunction
 function newimg=fisheye(img)
     // effet fish-eye
 
+    img = img(1:min(size(img,1),size(img,2)),1:min(size(img,1),size(img,2)),:)
     [x,y]=size(img);
     
     img=im2double(img);
@@ -267,6 +267,7 @@ endfunction
 function newimg=time_warp(img)
     // comme si le milieu de l'image l'aspirait
 
+    img = img(1:min(size(img,1),size(img,2)),1:min(size(img,1),size(img,2)),:)
     [x,y]=size(img);
     
     img=im2double(img);

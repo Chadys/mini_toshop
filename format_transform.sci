@@ -69,6 +69,7 @@ function newimg=rotation(img, deg)
         deg = 90
     end
 
+	img = img(1:min(size(img,1),size(img,2)),1:min(size(img,1),size(img,2)),:)
     [x,y]=size(img);
     
     deg = deg2rad(deg)
