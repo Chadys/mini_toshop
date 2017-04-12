@@ -36,16 +36,16 @@ function newimg = flip(img, flip_type)
 	if flip_type == 1 then
 		for i = 1 : x
 			for j = 1 : y/2+1
-				new_img(i,j,:) = matrix(img(i,y-j+1,:),1,c)
-				new_img(i,y-j+1,:) = matrix(img(i,j,:),1,c)
+				newimg(i,j,:) = matrix(img(i,y-j+1,:),1,c)
+				newimg(i,y-j+1,:) = matrix(img(i,j,:),1,c)
 			end
 		end
 	// horizontal flip
 	elseif flip_type == 2 then
 		for i = 1 : x/2+1
 			for j = 1 : y
-				new_img(i,j,:) = matrix(img(x-i+1,j,:),1,c)
-				new_img(x-i+1,j,:) = matrix(img(i,j,:),1,c)
+				newimg(i,j,:) = matrix(img(x-i+1,j,:),1,c)
+				newimg(x-i+1,j,:) = matrix(img(i,j,:),1,c)
 			end 
 		end
 	// both flips
