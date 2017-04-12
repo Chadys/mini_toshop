@@ -19,36 +19,18 @@ function [] = up_common(frame_list)
 	disp(frame_list.Value);
 endfunction
 //UPDATE FILTER
-//function [] = updatelistbox (filterlist , filterframe , slider_item1 , slider_item2 , slider_item3, edit_item1)
 function [new_slider_item1, new_slider_item1_text,new_slider_item1_desc,new_slider_item2, new_slider_item2_text,new_slider_item2_desc,new_slider_item3, new_slider_item3_text,new_slider_item3_desc,new_slider_item4, new_slider_item4_text,new_slider_item4_desc, new_frame_list, new_frame_list_desc,new_frame_list2,new_frame_list2_desc] = updatelistbox (filterlist , filterframe)
   	disp(filterlist.Value);
-
-// filterlist=uicontrol(fig_item,"style","listbox");
-// filterlist.Position = [100 475 200 80];
-// filterlist.String = ["rvb2nb" "negative" "linear_extension" "histo_equalizer" "brightness" "exposure" "glitch" "seuillage" "bit_reduce" "color_blend" "zoom" "flip" "tiling" "glassy" "mosaic" "oil" "noisify" "halftoning" "superior_halftoning" "swirl" "fisheye" "time_warp" "wave" "convolute" "median" "despeckle" "oulining"];
-// filterlist.Value = 1;
-// filterlist.BackgroundColor=[1 1 1];
-
 
 	if ~exists("new_frame_list","local") then
 		//Item list
   		new_frame_list = uicontrol(filterframe , "style" , "listbox");
-  		// new_frame_list.position = [0 210 200 80];
-  		// new_frame_list.String = ["none"];
-  		// new_frame_list.Value = 0;
-  		// new_frame_list.BackgroundColor=[1 1 1];
   		//desc
   		new_frame_list_desc = uicontrol(filterframe, "style", "text");
-  		// new_frame_list_desc.position = [210 235 150 30];
   		//Item list 2
   		new_frame_list2 = uicontrol(filterframe , "style" , "listbox");
-  		// new_frame_list2.position = [0 130 200 80];
-  		// new_frame_list2.String = ["none"];
-  		// new_frame_list2.Value = 0;
-  		// new_frame_list2.BackgroundColor=[1 1 1];
   		//desc
   		new_frame_list2_desc = uicontrol(filterframe, "style", "text");
-  		// new_frame_list2_desc.position = [210 155 150 30];
 
 
 	end
@@ -285,14 +267,6 @@ if filterlist.Value == 10 //colorblend
 	end
 	if filterlist.Value == 12 //Flip
 		clf(filterframe,"reset");
-
-// filterlist=uicontrol(fig_item,"style","listbox");
-// filterlist.Position = [100 475 200 80];
-// filterlist.String = ["rvb2nb" "negative" "linear_extension" "histo_equalizer" "brightness" "exposure" "glitch" "seuillage" "bit_reduce" "color_blend" "zoom" "flip" "tiling" "glassy" "mosaic" "oil" "noisify" "halftoning" "superior_halftoning" "swirl" "fisheye" "time_warp" "wave" "convolute" "median" "despeckle" "oulining"];
-// filterlist.Value = 1;
-// filterlist.BackgroundColor=[1 1 1];
-// filterlist.Callback = "[new_slider_item1,new_slider_item1_text,new_slider_item1_desc,new_slider_item2,new_slider_item2_text,new_slider_item2_desc,new_slider_item3,new_slider_item3_text,new_slider_item3_desc,new_slider_item4,new_slider_item4_text,new_slider_item4_desc, new_frame_list , new_frame_list_desc, new_frame_list2,new_frame_list2_desc] = updatelistbox(filterlist, filterframe)";
-
 
   		//desc
   		new_frame_list_desc = uicontrol(filterframe, "style", "text", ...
@@ -878,122 +852,6 @@ if filterlist.Value == 10 //colorblend
   		new_frame_list.Value = 3;
   		new_frame_list.BackgroundColor=[1 1 1];
 	 	end
- //  	if filterlist.Value == 1 then
- //  		clf(filterframe,"reset");
- //  		new_slider_item1_desc =uicontrol(filterframe, "style", "text", ...
-	// 						    "string", "Hello im slider 1", ...
-	// 						    "fontsize", 12, ...
-	// 						    "fontweight", "bold", ...
-	// 						    "fontangle", "italic", ...
-	// 						    "position", [170 0 150 30], ...	
-	// 						    "HorizontalAlignment", "center");
-	// 	new_slider_item1_text = uicontrol(filterframe, "style", "edit");
-	// 	new_slider_item1_text.Position = [110 0 50 30];
-	// 	new_slider_item1_text.Callback = "new_slider_item1.Value = uint8(new_slider_item1_text.String)";
- //  		new_slider_item1 = uicontrol(filterframe , "style" , "slider");
-	// 	new_slider_item1.Position = [0 0 100 30];
-	// 	new_slider_item1.min = 1;
-	// 	new_slider_item1.max = 4;
-	// 	new_slider_item1.SliderStep = [1 1];
-	// 	new_slider_item1.Callback = "new_slider_item1_text.String = string(uint8(new_slider_item1.value))"
-	// elseif filterlist.Value == 2 then 
-	// 	clf(filterframe,"reset");
-	// 	 new_slider_item2_desc = uicontrol(filterframe, "style", "text", ...
-	// 						    "string", "Hello im slider 2", ...
-	// 						    "fontsize", 12, ...
-	// 						    "fontweight", "bold", ...
-	// 						    "fontangle", "italic", ...
-	// 						    "position", [170 40 150 30], ...
-	// 						    "HorizontalAlignment", "center");
-	// 	new_slider_item2_text = uicontrol(filterframe, "style", "edit");
-	// 	new_slider_item2_text.Position = [110 40 50 30];
-	// 	new_slider_item2_text.Callback = "new_slider_item2.Value = uint8(new_slider_item2_text.String)";
- //  		new_slider_item2 = uicontrol(filterframe , "style" , "slider");
-	// 	new_slider_item2.Position = [0 40 100 30];
-	// 	new_slider_item2.min = 1;
-	// 	new_slider_item2.max = 4;
-	// 	new_slider_item2.SliderStep = [1 1];
-	// 	new_slider_item2.Callback = "new_slider_item2_text.String = string(uint8(new_slider_item2.value))"
-	// 	end
-	// 	  	if filterlist.Value == 3 then
- //  		clf(filterframe,"reset");
- //  		new_slider_item3_desc =uicontrol(filterframe, "style", "text", ...
-	// 						    "string", "Hello im slider 3", ...
-	// 						    "fontsize", 12, ...
-	// 						    "fontweight", "bold", ...
-	// 						    "fontangle", "italic", ...
-	// 						    "position", [170 80 150 30], ...
-	// 						    "HorizontalAlignment", "center");
-	// 	new_slider_item3_text = uicontrol(filterframe, "style", "edit");
-	// 	new_slider_item3_text.Position = [110 80 50 30];
-	// 	new_slider_item3_text.Callback = "new_slider_item3.Value = uint8(new_slider_item3_text.String)";
- //  		new_slider_item3 = uicontrol(filterframe , "style" , "slider");
-	// 	new_slider_item3.Position = [0 80 100 30];
-	// 	new_slider_item3.min = 1;
-	// 	new_slider_item3.max = 4;
-	// 	new_slider_item3.SliderStep = [1 1];
-	// 	new_slider_item3.Callback = "new_slider_item3_text.String = string(uint8(new_slider_item3.value))"
-	// end
-		// new_slider_item4_desc =uicontrol(filterframe, "style", "text", ...
-	 // 						    "string", "Gap size Y", ...
-	 // 						    "fontsize", 12, ...
-	 // 						    "fontweight", "bold", ...
-	 // 						    "fontangle", "italic", ...
-	 // 						    "position", [170 120 150 30], ...
-	 // 						    "HorizontalAlignment", "center");
-	 // 	new_slider_item4_text = uicontrol(filterframe, "style", "edit");
-	 // 	new_slider_item4_text.Position = [110 120 50 30];
-	 // 	new_slider_item4_text.String = "3";
-	 // 	new_slider_item4_text.Callback = "new_slider_item4.Value = (new_slider_item4_text.String)";
-  //  		new_slider_item4 = uicontrol(filterframe , "style" , "slider");
-	 // 	new_slider_item4.Position = [0 120 100 30];
-	 // 	new_slider_item4.min = 0;
-	 // 	new_slider_item4.max = 255;
-	 // 	new_slider_item4.SliderStep = [1 1];
-	 // 	new_slider_item4.Value = 3;
-	 // 	new_slider_item4.Callback = "new_slider_item4_text.String = string(uint8(new_slider_item4.value))"
-endfunction
-
-//  Convolute filters:
-//	1: moyenneur (T(3)) impair 3 15
-//	2: sharpener (T(3)) 
-//	3: gaussien  (T(3), sigma(1.4) 0 db 3)
-//	4: laplacien (T(8) 4 ou 8)	
-//
-//	convolute border modes:
-//	1: border to 0
-//	2: partiel convolution
-//	3: mirror border
-
-//FUNCTIONS
-//	1: rvb2nb(img)
-//	2: negative(img)
-//	3: linear_extension(img)
-//	4: histo_equalizer(img)
-//	5: brightness(img, shift(80) -inf + inf)
-//	6: exposure(img, shift(2) 0 + inf)
-//	7: glitch(img, glitchiness(5) 0 + inf)
-//	8: seuillage(img, treshold(255/2)0 255)
-//	9: bit_reduce(img, nbits(3)1 à 8)
-//	10: color_blend(img, color(yellow),coef(1)0 100)
-//	11: zoom (im , zoom_factor(2)2 + inf)
-//	12: flip (im , flip_type(2) 0 1 2)
-//	13: tiling
-
-// 	14: glassy (im, brush_size(3 3)0 +inf)
-//	15: mosaic (im , piece_size (6 6)0 +inf)
-//	16: oil painting (im , brush_size(7 7)0 +inf)
-//	17: noisify (im , noise_type(perlin|saltpepper), noise_factor(0.02)0 0.5)
-//	18: halftoning (im)
-//	19:	halftoning 2 superior (im)
-//	20: swirl (im,r_degree(%pi/80))
-//	21:	fisheye (im)
-//	22: time_warp (im)
-//	23: wave (im,wave factor(10)0 100,v_distord(true)%t %f, h_distord(true)%t %f)
-//	24: convolute (im,flt,bordermode(3))
-//	25: median (im, filter_size(3 3)impair ~ same 3 15, border_mode(3))
-//	26:	despeckle (im , filter_size(3 3), border_mode(2))
-//	27: oulining (im, filter_size(3 3), border_mode(3))
 
 
 //APPLY CALLBACK
@@ -1198,8 +1056,6 @@ function [ new_current_s_image , new_current_ns_image] = my_refreshcall (base_im
 endfunction
 
 //MAIN UI
-//function [fig_item] = my_gui()
-
 
 //Figure init
 hmain = scf();
@@ -1321,15 +1177,12 @@ filterlist.Callback = "[new_slider_item1,new_slider_item1_text,new_slider_item1_
 apply_button = uicontrol(fig_item, "style" , "pushbutton");
 apply_button.String = "Apply";
 apply_button.Position = [150 80 100 30];
-//(filterlist , current_pic_saved, current_pic_non_saved, is_filter)
 apply_button.Callback = "[current_s_image,current_ns_image] = my_applycall(filterlist,current_s_image,new_slider_item1, new_slider_item1_text, new_slider_item1_desc, new_slider_item2, new_slider_item2_text, new_slider_item2_desc, new_slider_item3, new_slider_item3_text, new_slider_item3_desc,new_slider_item4, new_slider_item4_text, new_slider_item4_desc,new_frame_list,new_frame_list2)";
 
 //Refresh button
 refresh_button = uicontrol(fig_item, "style" , "pushbutton");
 refresh_button.String = "Refresh";
 refresh_button.Position = [50 40 100 30];
-//(base_pic , current_pic_saved , current_pic_non_saved)
-refresh_button.Callback = "[current_s_image,current_ns_image] = my_refreshcall(base_image);";
 
 
 //Show button
@@ -1338,21 +1191,20 @@ undo_button.String = "Show";
 undo_button.Position = [250 40 100 30];
 undo_button.Callback = "my_showcall(current_s_image)";
 
-//File operations picture will be the save load item can be changed if wanted
-
-//endfunction
 
 //  Convolute filters:
 //	1: moyenneur (T(3)) impair 3 15
 //	2: sharpener (T(3)) 
 //	3: gaussien  (T(3), sigma(1.4) 0 db 3)
+//	4: Sobel (T(3)) impair 3 15
 //	4: laplacien (T(8) 4 ou 8)	
 //
 //	convolute border modes:
 //	1: border to 0
 //	2: partiel convolution
 //	3: mirror border
-//
+
+//FUNCTIONS
 //	1: rvb2nb(img)
 //	2: negative(img)
 //	3: linear_extension(img)
@@ -1367,14 +1219,17 @@ undo_button.Callback = "my_showcall(current_s_image)";
 //	12: flip (im , flip_type(2) 0 1 2)
 //	13: tiling
 
-//Image de base
-//Current image (saved state)
-//Current image (non saved)
-//Champ val numérique
-//Button save
-//Button refresh
-//Button undo
-//	13: convolute (im, flt ,border_mode(3))
-//	14: median_filter(img, flt_size(3 3),border_mode(3))
-//	15: despeckle(img, flt_size(3 3), border_mode(2)1 2)
-//	16: outlining(img, flt_size(3), border_mode(3))
+// 	14: glassy (im, brush_size(3 3)0 +inf)
+//	15: mosaic (im , piece_size (6 6)0 +inf)
+//	16: oil painting (im , brush_size(7 7)0 +inf)
+//	17: noisify (im , noise_type(perlin|saltpepper), noise_factor(0.02)0 0.5)
+//	18: halftoning (im)
+//	19:	halftoning 2 superior (im)
+//	20: swirl (im,r_degree(%pi/80))
+//	21:	fisheye (im)
+//	22: time_warp (im)
+//	23: wave (im,wave factor(10)0 100,v_distord(true)%t %f, h_distord(true)%t %f)
+//	24: convolute (im,flt,bordermode(3))
+//	25: median (im, filter_size(3 3)impair ~ same 3 15, border_mode(3))
+//	26:	despeckle (im , filter_size(3 3), border_mode(2))
+//	27: oulining (im, filter_size(3 3), border_mode(3))
