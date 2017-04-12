@@ -19,6 +19,7 @@ function [] = up_common(frame_list)
 	disp(frame_list.Value);
 endfunction
 //UPDATE FILTER
+//function [] = updatelistbox (filterlist , filterframe , slider_item1 , slider_item2 , slider_item3, edit_item1)
 function [new_slider_item1, new_slider_item1_text,new_slider_item1_desc,new_slider_item2, new_slider_item2_text,new_slider_item2_desc,new_slider_item3, new_slider_item3_text,new_slider_item3_desc,new_slider_item4, new_slider_item4_text,new_slider_item4_desc, new_frame_list, new_frame_list_desc,new_frame_list2,new_frame_list2_desc] = updatelistbox (filterlist , filterframe)
   	disp(filterlist.Value);
 
@@ -31,7 +32,6 @@ function [new_slider_item1, new_slider_item1_text,new_slider_item1_desc,new_slid
   		new_frame_list2 = uicontrol(filterframe , "style" , "listbox");
   		//desc
   		new_frame_list2_desc = uicontrol(filterframe, "style", "text");
-
 
 	end
 
@@ -267,7 +267,6 @@ if filterlist.Value == 10 //colorblend
 	end
 	if filterlist.Value == 12 //Flip
 		clf(filterframe,"reset");
-
   		//desc
   		new_frame_list_desc = uicontrol(filterframe, "style", "text", ...
 		 						    "string", "Flip axe", ...
@@ -853,7 +852,7 @@ if filterlist.Value == 10 //colorblend
   		new_frame_list.BackgroundColor=[1 1 1];
 	 	end
 
-
+endfunction
 //APPLY CALLBACK
 function [new_current_s_image, new_current_ns_image] = my_applycall(filterlist, current_ns_image, slider_item1 ,slider_item1_text,slider_item1_desc , slider_item2 ,slider_item2_text,slider_item2_desc , slider_item3 ,slider_item3_text,slider_item3_desc , slider_item4 ,slider_item4_text,slider_item4_desc,frame_list,frame_list2)
 	if filterlist.Value ==1 then
@@ -1183,6 +1182,7 @@ apply_button.Callback = "[current_s_image,current_ns_image] = my_applycall(filte
 refresh_button = uicontrol(fig_item, "style" , "pushbutton");
 refresh_button.String = "Refresh";
 refresh_button.Position = [50 40 100 30];
+refresh_button.Callback = "[current_s_image,current_ns_image] = my_refreshcall(base_image);";
 
 
 //Show button
@@ -1191,13 +1191,12 @@ undo_button.String = "Show";
 undo_button.Position = [250 40 100 30];
 undo_button.Callback = "my_showcall(current_s_image)";
 
-
 //  Convolute filters:
 //	1: moyenneur (T(3)) impair 3 15
 //	2: sharpener (T(3)) 
 //	3: gaussien  (T(3), sigma(1.4) 0 db 3)
-//	4: Sobel (T(3)) impair 3 15
-//	4: laplacien (T(8) 4 ou 8)	
+//	4: sobel (T(3)), impair 3 15
+//	5: laplacien (T(8) 4 ou 8)	
 //
 //	convolute border modes:
 //	1: border to 0
