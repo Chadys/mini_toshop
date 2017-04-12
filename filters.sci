@@ -6,6 +6,9 @@ function flt = moyenneur(T)
   	if ~exists("T","local") then
     	T=3
   	end
+    if ~modulo(T,2) | T<3 | T>15 then
+        error('T must be an odd number between 3 and 15!');
+    end
 
 	flt = ones(T,T) * 1/9
 endfunction
@@ -19,6 +22,9 @@ function flt = sharpener(T)
   	if ~exists("T","local") then
     	T=3
   	end
+    if ~modulo(T,2) | T<3 | T>15 then
+        error('T must be an odd number between 3 and 15!');
+    end
 
 	flt = zeros(T,T)
 	middle = floor(T/2)
@@ -40,6 +46,9 @@ function flt = gaussien(T, sigma)
   	if ~exists("T","local") then
     	T=3
   	end
+    if ~modulo(T,2) | T<3 | T>15 then
+        error('T must be an odd number between 3 and 15!');
+    end
 
 	indices = -floor(T/2) : floor(T/2);
 	[x y] = meshgrid(indices, indices);
@@ -56,6 +65,9 @@ function [D,G,H,B] = sobel(T)
   	if ~exists("T","local") then
     	T=3
   	end
+    if ~modulo(T,2) | T<3 | T>15 then
+        error('T must be an odd number between 3 and 15!');
+    end
 
 	D =  -floor(T/2) : floor(T/2)
 	for i = 2 : T
@@ -75,6 +87,9 @@ function flt = laplacien(T)
   	if ~exists("T","local") then
     	T = 8
   	end
+    if T<>4 & T<>8 then
+        error('T must be 4 or 8!');
+    end
 
   	if T == 4 then
   		flt = [0 1 0 ; 1 -4 1 ; 0 1 0]
