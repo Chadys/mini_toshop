@@ -1054,7 +1054,7 @@ function [ new_current_s_image , new_current_ns_image] = my_refreshcall (base_im
   	imshow(new_current_ns_image);
 endfunction
 
-//REFRESH CALLBACK
+//CLOSE CALLBACK
 function [] = my_closecall(fig_handle)
 	close(fig_handle);
 	clear
