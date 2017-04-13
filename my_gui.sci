@@ -1,5 +1,5 @@
 //Supported file formats (Outside of function else it doesnt work)
-supported_formats = ["*.jp*g","JPG/JPEG format";"*.png","PNG format";"*.gif","GIF format"];
+supported_formats = ["*.jp*g","JPG/JPEG format";"*.png","PNG format"];
 
 //LOAD FUNCTION
 function [base_image,current_s_image,current_ns_image] = my_load(sup_formats)
@@ -97,7 +97,7 @@ if filterlist.Value == 6 //exposure
    		new_slider_item1 = uicontrol(filterframe , "style" , "slider");
 	 	new_slider_item1.Position = [0 0 100 30];
 	 	new_slider_item1.min = 0;
-	 	new_slider_item1.max = 1000;
+	 	new_slider_item1.max = 255;
 	 	new_slider_item1.SliderStep = [0.1 0.1];
 	 	new_slider_item1.value = 2;
 	 	new_slider_item1.Callback = "new_slider_item1_text.String = string(double(new_slider_item1.value))"
@@ -259,11 +259,11 @@ if filterlist.Value == 10 //colorblend
 		 	new_slider_item1_text.Callback = "new_slider_item1.Value = new_slider_item1_text.String";
 	   		new_slider_item1 = uicontrol(filterframe , "style" , "slider");
 		 	new_slider_item1.Position = [0 0 100 30];
-		 	new_slider_item1.min = 1;
+		 	new_slider_item1.min = 0.1;
 		 	new_slider_item1.max = 10;
-		 	new_slider_item1.SliderStep = [1 1];
+		 	new_slider_item1.SliderStep = [0.1 0.1];
 		 	new_slider_item1.value = 2;
-		 	new_slider_item1.Callback = "new_slider_item1_text.String = string(uint8(new_slider_item1.value))"
+		 	new_slider_item1.Callback = "new_slider_item1_text.String = string(double(new_slider_item1.value))"
 	end
 	if filterlist.Value == 12 //Flip
 		clf(filterframe,"reset");
@@ -896,7 +896,7 @@ function [new_current_s_image, new_current_ns_image] = my_applycall(filterlist, 
 		imshow(new_current_s_image);
 		end
 	if filterlist.Value ==9 then
-		new_current_s_image = bit_reduceit(current_ns_image , slider_item1.value);
+		new_current_s_image = bit_reduce(current_ns_image , slider_item1.value);
 		new_current_ns_image = new_current_s_image;
 		imshow(new_current_s_image);
 		end
@@ -1054,6 +1054,12 @@ function [ new_current_s_image , new_current_ns_image] = my_refreshcall (base_im
   	imshow(new_current_ns_image);
 endfunction
 
+//REFRESH CALLBACK
+function [] = my_closecall(fig_handle)
+	close(fig_handle);
+	clear
+endfunction
+
 //MAIN UI
 
 //Figure init
@@ -1077,7 +1083,7 @@ our_title = uicontrol(fig_item, "style", "text", ...
     "fontangle", "italic", ...
     "position", [150 570 100 30], ...
     "HorizontalAlignment", "center", ...
-    "ForegroundColor", [1 0.7 0]);
+    "ForegroundColor", [1 0.7 0]);	
 
 
 //Filter spe frame
@@ -1190,6 +1196,12 @@ undo_button = uicontrol(fig_item, "style" , "pushbutton");
 undo_button.String = "Show";
 undo_button.Position = [250 40 100 30];
 undo_button.Callback = "my_showcall(current_s_image)";
+
+//Quit button
+apply_button = uicontrol(fig_item, "style" , "pushbutton");
+apply_button.String = "Quit";
+apply_button.Position = [150 5 100 30];
+apply_button.Callback = "my_closecall(hmain)";
 
 //  Convolute filters:
 //	1: moyenneur (T(3)) impair 3 15
