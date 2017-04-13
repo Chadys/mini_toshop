@@ -135,7 +135,7 @@ if filterlist.Value == 8 //seuillage
 	 	new_slider_item1_text = uicontrol(filterframe, "style", "edit");
 	 	new_slider_item1_text.Position = [110 0 50 30];
 	 	new_slider_item1_text.String = "127";
-	 	new_slider_item1_text.Callback = "new_slider_item1.Value = new_slider_item1_text.String)";
+	 	new_slider_item1_text.Callback = "new_slider_item1.Value = new_slider_item1_text.String";
    		new_slider_item1 = uicontrol(filterframe , "style" , "slider");
 	 	new_slider_item1.Position = [0 0 100 30];
 	 	new_slider_item1.min = 0;
@@ -156,7 +156,7 @@ if filterlist.Value == 9 //bit_reduce
 	 	new_slider_item1_text = uicontrol(filterframe, "style", "edit");
 	 	new_slider_item1_text.Position = [110 0 50 30];
 	 	new_slider_item1_text.String = "3";
-	 	new_slider_item1_text.Callback = "new_slider_item1.Value = new_slider_item1_text.String)";
+	 	new_slider_item1_text.Callback = "new_slider_item1.Value = new_slider_item1_text.String";
    		new_slider_item1 = uicontrol(filterframe , "style" , "slider");
 	 	new_slider_item1.Position = [0 0 100 30];
 	 	new_slider_item1.min = 1;
