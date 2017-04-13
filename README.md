@@ -18,4 +18,4 @@
 - Vous pouvez ensuite choisir un filtre à appliquer, avec, au besoin, des paramètres supplémentaires à définir.
 - Les boutons : "Apply" sert à appliquer un filtre. "Show" permet de réouvrir le visionneur d'image s'il a été fermé par erreur. "Refresh" permet de revenir à l'image de base.
 - Pour sauver une image modifiée, aller dans Picture -> File -> Save picture.
-**Pour quitter** : Bouton "Quit" et fermer le visionneur d'image éventuellement ouvert.
+- Pour quitter : Bouton "Quit" et fermer le visionneur d'image éventuellement ouvert.
