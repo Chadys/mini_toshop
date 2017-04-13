@@ -1,3 +1,4 @@
+**Structure du programme** :
 - filters.sci : application de filtres (de convolution ou non)
 - color_transform.sci : opération sur les couleurs (negatif, luminosité, extension linéaire,...)
 - format_transform.sci : modification du format de l'image (taille, orientation)
